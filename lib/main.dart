@@ -1,29 +1,24 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:faceauth/views/onBoarding/loginScreen.dart';
+import 'package:faceauth/views/onBoarding/register.dart';
 import 'package:faceauth/views/onBoarding/splashScreen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final _cameras = await availableCameras();
+  final firstCamera = _cameras.first;
+  runApp(MyApp(firstCamera: firstCamera));
+}
 
 class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Home();
-  }
-}
+  const MyApp({required this.firstCamera, Key? key}) : super(key: key);
+  final firstCamera;
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Roboto'),
-      home: SplashScreen(),
+      home: SplashScreen(firstCamera: firstCamera),
     );
   }
 }

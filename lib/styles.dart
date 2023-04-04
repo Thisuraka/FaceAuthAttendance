@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const DefaultColor = Color(0xFFFF9470);
+const DefaultColor = Color.fromARGB(255, 0, 46, 77);
 const InactiveColor = Color(0xFFCFCFCF);
 const Button2BorderColor = Color(0xFFC6C6C6);
 const WarningAlertColor = Color(0xFFFFD429);
@@ -36,8 +36,11 @@ const HeaderStyle3 = TextStyle(
 const SubHeadStyle =
     TextStyle(color: DefaultColor, fontWeight: FontWeight.bold, fontSize: 16);
 
-const LabelStyle1 =
-    TextStyle(fontFamily: DefaultFont, color: Colors.white54, fontSize: 16.0,);
+const LabelStyle1 = TextStyle(
+  fontFamily: DefaultFont,
+  color: Colors.white54,
+  fontSize: 16.0,
+);
 
 const HintStyle1 = TextStyle(
     fontFamily: DefaultFont,
