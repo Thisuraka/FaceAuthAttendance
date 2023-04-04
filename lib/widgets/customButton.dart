@@ -20,11 +20,14 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-          primary: Colors.white,
-          textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          textStyle: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
         ),
         onPressed: onPress,
-        child: Text(labelText!),
+        child: Text(
+          labelText!,
+          style: LabelStyle1,
+        ),
       ),
     );
   }

@@ -11,33 +11,19 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _name = TextEditingController();
   late CameraController _cameraController;
+  late Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
     super.initState();
+    _cameraController = CameraController(
+      widget.firstCamera,
+      ResolutionPreset.max,
+    );
 
-    _cameraController =
-        CameraController(widget.firstCamera, ResolutionPreset.max);
-    _cameraController.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            // Handle access errors here.
-            break;
-          default:
-            // Handle other errors here.
-            break;
-        }
-      }
-    });
+    _initializeControllerFuture = _cameraController.initialize();
   }
 
   @override
@@ -46,44 +32,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  registerPerson() {}
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black87,
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.all(10),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomButton(
-                          labelText: "Login ",
-                          active: true,
-                          onPress: () {
-                            loginRegisterCheck();
-                          }),
-                    ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+              color: Colors.black87,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.7,
+                    width: MediaQuery.of(context).size.width,
+                    child: FutureBuilder<void>(
+                      future: _initializeControllerFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return CameraPreview(_cameraController);
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextBox(controller: _name, labelText: "enter name"),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  CustomButton(
+                      labelText: "Register",
+                      onPress: registerPerson(),
+                      active: true)
+                ],
+              )),
         ),
       ),
     );
   }
-
-  loginRegisterCheck() {}
 }

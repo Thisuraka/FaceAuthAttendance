@@ -55,10 +55,20 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
               ),
-              Text("Are you present?",
-                  style: GoogleFonts.raleway(
-                    textStyle: LogoText,
-                  ))
+              GestureDetector(
+                onTap: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          RegisterScreen(firstCamera: widget.firstCamera),
+                    ),
+                  )
+                },
+                child: Text("Are you present?",
+                    style: GoogleFonts.raleway(
+                      textStyle: LogoText,
+                    )),
+              )
             ],
           ),
         ),
