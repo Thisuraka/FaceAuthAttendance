@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings {
-  static setFaceData(String faces) async {
+  static setPersonData(String person) async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-    sharedPrefs.setString("faces", faces);
+    sharedPrefs.setString("person", person);
   }
 
-  static Future<String?> getFaceData() async {
+  static Future<String?> getPersonData() async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-    return sharedPrefs.getString("faces");
+    return sharedPrefs.getString("person");
   }
 }

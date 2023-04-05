@@ -1,18 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'package:faceauth/models/Person.dart';
-import 'package:faceauth/utils/hive.dart';
 import 'package:faceauth/utils/settings.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:faceauth/widgets/customButton.dart';
 import 'package:faceauth/widgets/customTextbox.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   final firstCamera;
@@ -37,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
     _initializeControllerFuture = _cameraController.initialize();
     _cameraController.setFlashMode(FlashMode.off);
+    _name.text = "ggg";
   }
 
   @override
@@ -77,32 +75,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     final List<Face> faces = await faceDetector.processImage(inputImage);
 
-    for (Face face in faces) {
-      final Rect boundingBox = face.boundingBox;
-
-      final double? rotX = face.headEulerAngleX;
-      final double? rotY = face.headEulerAngleY;
-      final double? rotZ = face.headEulerAngleZ;
-
-      final FaceLandmark? leftEar = face.landmarks[FaceLandmarkType.leftEar];
-      if (leftEar != null) {
-        final Point<int> leftEarPos = leftEar.position;
-      }
-      if (face.smilingProbability != null) {
-        final double? smileProb = face.smilingProbability;
-      }
-      if (face.trackingId != null) {
-        final int? id = face.trackingId;
-      }
-    }
-
     File file = File(imageTaken.path);
     Uint8List bytes = file.readAsBytesSync();
     String base64Image = base64Encode(bytes);
 
-    var person = Person(base64Image, faces, _name.text);
-
-    HiveBoxes.addData(person);
+    // var person = Person(base64Image, faces[0], _name.text);
+    // Settings.setPersonData(jsonEncode(person));
 
     faceDetector.close();
   }
